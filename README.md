@@ -28,12 +28,13 @@ Verfügbar als:
    Öffne die Datei `theme.js` und füge den Code aus **[javascript-free-shipping-bar.js](free-shipping-bar/javascript-free-shipping-bar.js)** ganz am Ende der Datei ein.
 
 6. **`theme.ShippingBar.updated();` einfügen:**  
-   Kopiere die Funktion `theme.ShippingBar.updated();` und füge sie in die entsprechenden Funktionen des Themes Motion ein:
+   Kopiere den Funktionsaufruf `theme.ShippingBar.updated();` und füge den Code in die entsprechenden Funktionen:
    - **_updateCart():** Innerhalb des `then((cart)`-Aufrufs.
    - **_addItemFromForm():** Ebenfalls innerhalb des `then((cart)`-Aufrufs. Bei Dir könnte es auch `addToCart()` heissen.
 
 7. **Nur bei Snippet-Variante:**  
    Damit die Datei im Bereich des Cart-Drawers sichtbar ist, öffne die Datei `cart-drawer.liquid` und füge diesen Code an der gewünschten Stelle ein:
+
    ```liquid
    {% render 'free-shipping-bar' %}
    ```
