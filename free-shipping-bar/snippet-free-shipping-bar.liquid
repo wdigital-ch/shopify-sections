@@ -1,0 +1,76 @@
+{% style %}
+    .free-shipping-announcement {
+        font-size: var(--typeBaseSize);
+        color: #000000;
+        background-color: #f7f7f7;
+        padding-top: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        text-align: center;
+    }
+
+    .free-shipping-progress-container {
+        width: 100%;
+        margin-top: 10px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .free-shipping-message {
+        font-size: calc(var(--typeBaseSize) * .9);
+        margin: 0;
+    }
+
+    .free-shipping-progress-container {
+        background-color: rgba(42, 43, 42, 0.2);
+        overflow: hidden;
+        height: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 2px;
+    }
+
+    .free-shipping-progress-bar {
+        height: 100%;
+        transition: width 0.3s ease;
+        width: 0%;
+        border-radius: 2px;
+        animation: pulse 2s infinite;
+        background-color: #4caf50;
+        border-radius: 4px;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5), 0 0 20px rgba(76, 175, 80, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), 0 0 30px rgba(76, 175, 80, 0.5);
+        }
+        100% {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5), 0 0 20px rgba(76, 175, 80, 0.4);
+        }
+    }
+{% endstyle %}
+<div>
+    {% assign promote_txt = 'Nur noch <strong>[value]</strong> bis zu <strong>kostenlosem Versand</strong>!' %}
+    {% assign unlocked_txt = '🎉 <strong>Herzlichen Glückwunsch</strong>! Du hast den <strong>kostenlosen Versand</strong> freigeschaltet! 🎊' %}
+    {% assign treshold = 250 | times: 100 %}
+
+    {% assign value_left = treshold | minus: cart.total_price %}
+    {% assign value_left_money = value_left | money_with_currency %}
+
+    <div class="free-shipping-announcement" data-promote="{{ promote_txt }}" data-unlocked="{{ unlocked_txt }}" data-treshold="{{ treshold }}" data-currency="{{ Shopify.currency.active }}" data-total="{{ cart.total_price }}" data-formated="{{ cart.total_price | money_with_currency }}">
+        {% if value_left <= 0 %}
+            <p class="free-shipping-message">{{ unlocked_txt }}</p>
+        {% else %}
+            <p class="free-shipping-message">
+                {{ promote_txt | replace: '[value]', value_left_money }}
+            </p>
+        {% endif %}
+        <div class="free-shipping-progress-container">
+            <div id="free-shipping-progress-bar" class="free-shipping-progress-bar"></div>
+        </div>
+    </div>
+</div>

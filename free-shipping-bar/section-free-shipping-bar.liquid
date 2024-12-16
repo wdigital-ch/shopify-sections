@@ -1,0 +1,230 @@
+{%- liquid
+  assign promote_txt = section.settings.promote_free_shipping_txt
+  assign unlocked_txt = section.settings.unlocked_free_shipping_txt
+  assign treshold = section.settings.free_shipping_treshold | times: 100
+  assign value_left = treshold | minus: cart.total_price
+  assign value_left_money = value_left | money_with_currency
+-%}
+{% style %}
+  .free-shipping-announcement {
+    font-size: {{ settings.type_base_size }}px;
+    color: {{ section.settings.font_color }};
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-right: {{ section.settings.padding_right }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    padding-left: {{ section.settings.padding_left }}px;
+    text-align: center;
+  }
+  .free-shipping-progress-container {
+    width: {{ section.settings.progressbar_width }}%;
+    margin-top: {{ section.settings.progressbar_space_top }}px;
+    background-color: {{ section.settings.progressbar_container_bg_color }};
+    border-radius: {{ section.settings.progressbar_border_radius }}px;
+  }
+  .free-shipping-progress-bar{
+    background-color: {{ section.settings.progressbar_bg_progress_color }};
+    border-radius: {{ section.settings.progressbar_border_radius }}px;
+  }
+{% endstyle %}
+
+<div class="free-shipping-container">
+    <div class="free-shipping-announcement" data-promote="{{ promote_txt }}" data-unlocked="{{ unlocked_txt }}" data-treshold="{{ treshold }}" data-currency="{{ Shopify.currency.active }}" data-total="{{ cart.total_price }}" data-formated="{{ cart.total_price | money_with_currency }}">
+        {% if value_left <= 0 %}
+            <p class="free-shipping-message">{{ unlocked_txt }}</p>
+        {% else %}
+            <p class="free-shipping-message">
+                {{ promote_txt | replace: '[value]', value_left_money }}
+            </p>
+        {% endif %}
+        {% if section.settings.free_shipping_show_progress %}
+            <div class="free-shipping-progress-container">
+                <div id="free-shipping-progress-bar" class="free-shipping-progress-bar"></div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+  "name"    : "Kostenlose Versand Bar",
+  "settings": [
+    {
+      "type"   : "inline_richtext",
+      "id"     : "promote_free_shipping_txt",
+      "label"  : "Nachricht zur Bewerbung von kostenlosem Versand",
+      "default": "Gib noch [value] aus, um kostenlosen Versand freizuschalten!",
+      "info"   : "[value] wird durch den Betrag ersetzt, der benötigt wird, um kostenlosen Versand zu erreichen."
+    },
+    {
+      "type"   : "inline_richtext",
+      "id"     : "unlocked_free_shipping_txt",
+      "label"  : "Nachricht für freigeschalteten kostenlosen Versand",
+      "default": "🎉 <strong>Herzlichen Glückwunsch</strong>! Du hast den <strong>kostenlosen Versand</strong> freigeschaltet! 🎊"
+    },
+    {
+      "type"   : "range",
+      "id"     : "free_shipping_treshold",
+      "label"  : "Schwelle für kostenlosen Versand",
+      "min"    : 0,
+      "max"    : 200,
+      "step"   : 5,
+      "default": 50
+    },
+    {
+      "type"   : "range",
+      "label"  : "Padding oben",
+      "id"     : "padding_top",
+      "min"    : 0,
+      "max"    : 100,
+      "step"   : 1,
+      "default": 20,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "range",
+      "label"  : "Padding rechts",
+      "id"     : "padding_right",
+      "min"    : 0,
+      "max"    : 100,
+      "step"   : 1,
+      "default": 20,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "range",
+      "label"  : "Padding unten",
+      "id"     : "padding_bottom",
+      "min"    : 0,
+      "max"    : 100,
+      "step"   : 1,
+      "default": 20,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "range",
+      "label"  : "Padding links",
+      "id"     : "padding_left",
+      "min"    : 0,
+      "max"    : 100,
+      "step"   : 1,
+      "default": 20,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "color",
+      "id"     : "background_color",
+      "label"  : "Hintergrundfarbe",
+      "default": "#f7f7f7"
+    },
+    {
+      "type"   : "color",
+      "id"     : "font_color",
+      "label"  : "Schriftfarbe",
+      "default": "#000000"
+    },
+    {
+      "type"   : "range",
+      "id"     : "font_size",
+      "label"  : "Schriftgröße",
+      "min"    : 12,
+      "max"    : 72,
+      "step"   : 1,
+      "default": 16,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "checkbox",
+      "id"     : "free_shipping_show_progress",
+      "label"  : "Fortschrittsbalken anzeigen",
+      "default": false
+    },
+    {
+      "type"   : "range",
+      "id"     : "progressbar_width",
+      "label"  : "Breite des Fortschrittsbalkens",
+      "min"    : 10,
+      "max"    : 100,
+      "step"   : 1,
+      "default": 60,
+      "unit"   : "%"
+    },
+    {
+      "type"   : "range",
+      "id"     : "progressbar_space_top",
+      "label"  : "Abstand oben des Fortschrittsbalkens",
+      "min"    : 0,
+      "max"    : 20,
+      "step"   : 1,
+      "default": 10,
+      "unit"   : "px"
+    },
+    {
+      "type"   : "range",
+      "id"     : "progressbar_border_radius",
+      "label"  : "Eckenradius des Fortschrittsbalkens",
+      "min"    : 0,
+      "max"    : 50,
+      "step"   : 1,
+      "default": 4
+    },
+    {
+      "type"   : "color",
+      "id"     : "progressbar_container_bg_color",
+      "label"  : "Hintergrundfarbe des Fortschrittsbalken-Containers",
+      "default": "#e0e0e0"
+    },
+    {
+      "type"   : "color",
+      "id"     : "progressbar_bg_progress_color",
+      "label"  : "Farbe des Fortschrittsbalkens",
+      "default": "#4caf50"
+    }
+  ],
+  "presets" : [
+    {
+      "name": "Kostenlose Versand Bar"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+  .free-shipping-announcement {
+    text-align: center;
+  }
+
+  .free-shipping-message {
+    font-size: calc(var(--typeBaseSize) * .9);
+    margin: 0;
+  }
+
+  .free-shipping-progress-container {
+    background-color: rgba(42, 43, 42, 0.2);
+    overflow: hidden;
+    height: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2px;
+  }
+
+  .free-shipping-progress-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+    width: 0%;
+    border-radius: 2px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5), 0 0 20px rgba(76, 175, 80, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), 0 0 30px rgba(76, 175, 80, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5), 0 0 20px rgba(76, 175, 80, 0.4);
+    }
+  }
+{% endstylesheet %}
