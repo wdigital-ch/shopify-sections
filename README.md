@@ -1,6 +1,6 @@
 # Shopify Sections
 
-**Kostenloser Versand Bar - Support:**  
+## **Kostenloser Versand Bar - Support:**  
 *(NUR getestet mit dem Theme: [Motion](https://themes.shopify.com/themes/motion/styles/classic))*
 
 Verfügbar als:
@@ -9,7 +9,7 @@ Verfügbar als:
 
 ---
 
-## **Anleitung:**
+**Anleitung:**
 
 1. **Sicherheitskopie erstellen:**  
    Erstelle zuerst eine Sicherheitskopie deines Themes, um mögliche Fehler rückgängig machen zu können.
@@ -40,7 +40,7 @@ Verfügbar als:
 
 ---
 
-### Beispiel für die Funktion `_addItemFromForm()`:
+**Beispiel für die Funktion `_addItemFromForm()`:**
 So könnte die Funktion `_addItemFromForm()` aussehen:
 
 ```javascript
@@ -66,7 +66,7 @@ So könnte die Funktion `_addItemFromForm()` aussehen:
 ```
 ---
 
-### Beispiel für die Funktion `_updateCart()`:
+**Beispiel für die Funktion `_updateCart()`:**
 So könnte die Funktion `_updateCart()` aussehen:
 
 ```javascript
